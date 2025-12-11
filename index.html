@@ -873,7 +873,7 @@
             if(!onProgress) onProgress = (msg) => { document.getElementById('loadingText').innerText = msg; };
             
             const zip = new JSZip(); const imagesFolder = zip.folder("images");
-            const fullConfig = {}; for (let i = 0; i < localStorage.length; i++) { const key = localStorage.key(i); if (key.startsWith('profile_') || key.startsWith('theme_') || key === 'global_bg') fullConfig[key] = localStorage.getItem(key); }
+            const fullConfig = {}; for (let i = 0; i < localStorage.length; i++) { const key = localStorage.key(i); if (key.startsWith('profile_') || key.startsWith('theme_') || key === 'global_bg' || key === 'gh_config') fullConfig[key] = localStorage.getItem(key); }
             
             const tx = DBMgr.db.transaction(['collections'], 'readonly');
             const collections = await new Promise(r => tx.objectStore('collections').getAll().onsuccess = e => r(e.target.result));
