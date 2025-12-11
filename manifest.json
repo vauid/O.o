@@ -1,6 +1,6 @@
 {
-  "name": "Ouo",
-  "short_name": "Ouo",
+  "name": "O.o",
+  "short_name": "O.o",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#FFFFFF",
@@ -30,6 +30,7 @@
   ]
 
 }
+
 
 
 
