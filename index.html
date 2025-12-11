@@ -581,13 +581,29 @@
 
             <div style="font-size:0.89rem; color:#999; margin:20px 0 8px;">云端备份 (GitHub)</div>
             <div class="btn-white" style="display:block; cursor:default;">
-                <div style="margin-bottom:10px;">
-                    <div style="font-size:0.81rem; color:#666; margin-bottom:5px;">GitHub Token</div>
-                    <input type="text" id="gh-token-input" placeholder="ghp_xxxx..." style="width:100%; border:1px solid #eee; padding:8px; border-radius:4px; font-size:0.89rem;" onchange="GitHubMgr.saveConfig()">
+                <div onclick="const el=document.getElementById('gh-config-area'); const icon=this.querySelector('.toggle-icon'); if(el.style.display==='none'){el.style.display='block'; icon.style.transform='rotate(180deg)';}else{el.style.display='none'; icon.style.transform='rotate(0deg)';}" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer; padding-bottom:5px;">
+                    <div style="display:flex; align-items:center;">
+                        <span style="color:#333; font-weight:500;">🔧 配置参数</span>
+                        <div onclick="event.stopPropagation(); document.getElementById('gh-help-overlay').style.display='flex';" style="margin-left:8px; display:flex; align-items:center; padding:2px;">
+                            <svg style="width:16px; height:16px; color:#1890ff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        </div>
+                    </div>
+                    <svg class="toggle-icon" style="width:14px; height:14px; color:#999; transition:transform 0.3s;" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
                 </div>
-                <div style="margin-bottom:10px;">
-                    <div style="font-size:0.81rem; color:#666; margin-bottom:5px;">仓库路径 (用户名/仓库名)</div>
-                    <input type="text" id="gh-repo-input" placeholder="username/repo" style="width:100%; border:1px solid #eee; padding:8px; border-radius:4px; font-size:0.89rem;" onchange="GitHubMgr.saveConfig()">
+                <div id="gh-config-area" style="display:none; margin-top:10px; padding-top:10px; border-top:1px dashed #eee;">
+                    <div style="margin-bottom:10px;">
+                        <div style="font-size:0.81rem; color:#666; margin-bottom:5px;">GitHub Token</div>
+                        <div style="position:relative;">
+                            <input type="password" id="gh-token-input" placeholder="ghp_xxxx..." style="width:100%; border:1px solid #eee; padding:8px; padding-right:35px; border-radius:4px; font-size:0.89rem;" onchange="GitHubMgr.saveConfig()">
+                            <div onclick="const input=document.getElementById('gh-token-input'); const type=input.getAttribute('type')==='password'?'text':'password'; input.setAttribute('type', type); this.innerHTML=type==='text'?'<svg viewBox=\'0 0 24 24\' width=\'16\' height=\'16\' stroke=\'currentColor\' stroke-width=\'2\' fill=\'none\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><path d=\'M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24\'></path><line x1=\'1\' y1=\'1\' x2=\'23\' y2=\'23\'></line></svg>':'<svg viewBox=\'0 0 24 24\' width=\'16\' height=\'16\' stroke=\'currentColor\' stroke-width=\'2\' fill=\'none\' stroke-linecap=\'round\' stroke-linejoin=\'round\'><path d=\'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z\'></path><circle cx=\'12\' cy=\'12\' r=\'3\'></circle></svg>';" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); color:#999; cursor:pointer; display:flex;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:10px;">
+                        <div style="font-size:0.81rem; color:#666; margin-bottom:5px;">仓库路径 (用户名/仓库名)</div>
+                        <input type="text" id="gh-repo-input" placeholder="username/repo" style="width:100%; border:1px solid #eee; padding:8px; border-radius:4px; font-size:0.89rem;" onchange="GitHubMgr.saveConfig()">
+                    </div>
                 </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; border-top:1px solid #f5f5f5; padding-top:10px;">
                     <span>自动备份开关</span>
@@ -708,6 +724,40 @@
         <input type="file" id="font-file-input" class="hidden-input" accept=".ttf,.otf,.woff,.woff2" onchange="FontMgr.handleFileSelect(this)">
         <div class="menu-item" onclick="FontMgr.addByUrl()">输入网络字体 URL</div>
         <div class="menu-item" style="color:#666;" onclick="document.getElementById('addFontOverlay').style.display='none'">取消</div>
+    </div>
+</div>
+
+<!-- GitHub 帮助弹窗 -->
+<div class="overlay" id="gh-help-overlay" onclick="this.style.display='none'" style="z-index:6000;">
+    <div class="context-menu" onclick="event.stopPropagation()" style="padding:20px; max-height:80vh; overflow-y:auto; width:85%;">
+        <h3 style="margin-bottom:15px; text-align:center; font-size:1.1rem;">GitHub 配置指南</h3>
+        
+        <h4 style="margin:10px 0 5px; color:#333;">1. 获取 Token</h4>
+        <ol style="padding-left:20px; font-size:0.89rem; color:#555; line-height:1.6;">
+            <li>登录 GitHub，点击右上角头像 <br>→ <strong>Settings</strong></li>
+            <li>左侧菜单滑到底 <br>→ <strong>Developer settings</strong></li>
+            <li>点击 <strong>Personal access tokens</strong> <br>→ <strong>Tokens (classic)</strong></li>
+            <li>点击 <strong>Generate new token (classic)</strong></li>
+            <li>Note 随便填，Expiration 建议选 No expiration (永不过期)</li>
+            <li><strong>Scopes 必须勾选 <code style="background:#eee;padding:2px 4px;border-radius:3px;">repo</code> (包含所有子项)</strong></li>
+            <li>点击页底 Generate token，<strong>复制生成的字符</strong>即为 Token</li>
+        </ol>
+
+        <h4 style="margin:15px 0 5px; color:#333;">2. 创建仓库</h4>
+        <ol style="padding-left:20px; font-size:0.89rem; color:#555; line-height:1.6;">
+            <li>点击右上角 + 号 → <strong>New repository</strong></li>
+            <li>Repository name 填个名字（如 my-backup）</li>
+            <li>建议选 <strong>Private</strong> (私有)</li>
+            <li>点击 Create repository</li>
+        </ol>
+
+        <h4 style="margin:15px 0 5px; color:#333;">3. 填写示例</h4>
+        <ul style="padding-left:20px; font-size:0.89rem; color:#555; line-height:1.6;">
+            <li><strong>Token:</strong> <code>ghp_xxxxxxxxxxxx...</code></li>
+            <li><strong>仓库路径:</strong> <code>用户名/仓库名</code> <br><span style="font-size:0.81rem;color:#999;">(例如: zhangsan/my-backup)</span></li>
+        </ul>
+
+        <div class="menu-item" style="margin-top:20px; background:#f5f5f5; border-radius:8px; font-weight:bold;" onclick="document.getElementById('gh-help-overlay').style.display='none'">我学会了</div>
     </div>
 </div>
 
@@ -1809,5 +1859,4 @@
         });
     });
 </script>
-
 </body>
