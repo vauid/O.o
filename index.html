@@ -5,32 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#ffffff">
 <title>我的珍藏 - 全屏透明版</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
     :root {
         --active-color: #333; --bg-color: #f5f5f5; --card-bg: #fff;
-        --text-main: #333; --text-sub: #999; 
-        --nav-height: 50px; 
+        --text-main: #333; --text-sub: #999;
+        --nav-height: 50px;
+        --default-font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
         
         /* 底部依然使用变量，但顶部栏现在强制透明，不再使用 --top-bar-bg */
         --bottom-bar-bg: #fff;
-        --post-card-bg: #fff; 
+        --post-card-bg: #fff;
         
-        --safe-top: 15px; 
+        --safe-top: 15px;
         --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
     
     html, body { width: 100%; height: 100%; overflow: hidden; -webkit-text-size-adjust: 100%; }
     * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
     
-    body { 
-        font-size: 13.5px; 
-        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", Arial, sans-serif !important; 
-        background-color: transparent; color: var(--text-main); 
-        -webkit-user-select: none; user-select: none; line-height: 1.5; 
+    body {
+        font-size: var(--app-font-size, 13.5px);
+        font-family: var(--app-font, var(--default-font)) !important;
+        background-color: transparent; color: var(--text-main);
+        -webkit-user-select: none; user-select: none; line-height: 1.5;
     }
     
     #global-bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -999; background-color: var(--bg-color); background-size: cover; background-position: center; pointer-events: none; }
@@ -583,6 +583,16 @@
             <div class="btn-white" onclick="document.getElementById('globalBgInput').click()"><span>全局背景图</span><input type="file" id="globalBgInput" class="hidden-input" accept="image/*" onchange="setGlobalBg(this)"></div>
             <div class="btn-white" onclick="document.getElementById('postBgInput').click()"><span>帖子默认名片背景</span><input type="file" id="postBgInput" class="hidden-input" accept="image/*" onchange="ThemeMgr.setPostBg(this)"></div>
 
+            <div style="font-size:12px; color:#999; margin:20px 0 8px;">字体设置</div>
+            <div class="btn-white" onclick="FontMgr.showMenu()"><span>字体管理</span><span id="current-font-name" style="color:#999;font-size:12px;">默认</span></div>
+            <div class="btn-white" style="display:block; padding-bottom:5px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                    <span>全局字号</span>
+                    <span id="font-size-val" style="color:#999;font-size:12px;">13.5px</span>
+                </div>
+                <input type="range" min="10" max="22" step="0.5" value="13.5" id="fontSizeSlider" style="width:100%; height:4px;" oninput="ThemeMgr.setFontSize(this.value)">
+            </div>
+
             <div style="font-size:12px; color:#999; margin:20px 0 8px;">底部图标</div>
             <div class="theme-grid">
                 <div class="theme-icon-box" onclick="document.getElementById('icon1Input').click()"><img id="icon1Preview" src=""><span style="margin-top:5px;">首页</span><input type="file" id="icon1Input" class="hidden-input" accept="image/*" onchange="ThemeMgr.setIcon(0, this)"></div>
@@ -640,6 +650,28 @@
     </div>
 </div>
 
+<!-- 字体管理弹窗 -->
+<div class="overlay" id="fontOverlay" onclick="document.getElementById('fontOverlay').style.display='none'">
+    <div class="context-menu" style="height:60vh; display:flex; flex-direction:column;" onclick="event.stopPropagation()">
+        <div style="padding:15px; font-weight:bold; border-bottom:1px solid #eee; text-align:center; display:flex; justify-content:space-between; align-items:center;">
+            <span>字体管理</span>
+            <div style="font-size:12px; color:#333; background:#f0f0f0; padding:4px 8px; border-radius:4px; cursor:pointer;" onclick="FontMgr.addFontClick()">+ 添加</div>
+        </div>
+        <div id="font-list-container" style="flex:1; overflow-y:auto;"></div>
+        <div class="menu-item" style="color:#666; border-top:1px solid #eee;" onclick="document.getElementById('fontOverlay').style.display='none'">关闭</div>
+    </div>
+</div>
+<!-- 添加字体子弹窗 -->
+<div class="overlay" id="addFontOverlay" style="z-index: 4100;" onclick="document.getElementById('addFontOverlay').style.display='none'">
+    <div class="context-menu" onclick="event.stopPropagation()">
+        <div style="padding:15px; font-weight:bold; border-bottom:1px solid #eee; text-align:center;">添加新字体</div>
+        <div class="menu-item" onclick="document.getElementById('font-file-input').click()">上传本地字体文件 (.ttf/.otf/.woff)</div>
+        <input type="file" id="font-file-input" class="hidden-input" accept=".ttf,.otf,.woff,.woff2" onchange="FontMgr.handleFileSelect(this)">
+        <div class="menu-item" onclick="FontMgr.addByUrl()">输入网络字体 URL</div>
+        <div class="menu-item" style="color:#666;" onclick="document.getElementById('addFontOverlay').style.display='none'">取消</div>
+    </div>
+</div>
+
 <script>
     // 通用保存文件函数 - 核心修改：使用系统分享让用户选择
     function saveFileUniversal(blob, fileName) {
@@ -680,10 +712,15 @@
     }
 
     const DBMgr = {
-        dbName: 'LofterArchiveDB', dbVersion: 2, db: null,
+        dbName: 'LofterArchiveDB', dbVersion: 3, db: null,
         init: () => new Promise((resolve, reject) => {
             const request = indexedDB.open(DBMgr.dbName, DBMgr.dbVersion);
-            request.onupgradeneeded = (event) => { const db = event.target.result; if (!db.objectStoreNames.contains('posts')) db.createObjectStore('posts', { keyPath: 'id' }); if (!db.objectStoreNames.contains('collections')) db.createObjectStore('collections', { keyPath: 'id' }); };
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains('posts')) db.createObjectStore('posts', { keyPath: 'id' });
+                if (!db.objectStoreNames.contains('collections')) db.createObjectStore('collections', { keyPath: 'id' });
+                if (!db.objectStoreNames.contains('fonts')) db.createObjectStore('fonts', { keyPath: 'id' });
+            };
             request.onsuccess = (event) => { DBMgr.db = event.target.result; resolve(DBMgr.db); }; request.onerror = (event) => reject(event);
         }),
         getAllPostMeta: async () => {
@@ -728,6 +765,9 @@
         getAllCollections: async () => { if(!DBMgr.db) await DBMgr.init(); return new Promise((resolve) => { const request = DBMgr.db.transaction(['collections'], 'readonly').objectStore('collections').getAll(); request.onsuccess = () => resolve(request.result || []); }); },
         saveCollection: async (col) => { if(!DBMgr.db) await DBMgr.init(); return new Promise((resolve) => { const request = DBMgr.db.transaction(['collections'], 'readwrite').objectStore('collections').put(col); request.onsuccess = () => resolve(true); }); },
         deleteCollection: async (id) => { if(!DBMgr.db) await DBMgr.init(); return new Promise((resolve) => { const tx = DBMgr.db.transaction(['collections'], 'readwrite'); tx.objectStore('collections').delete(id); tx.oncomplete = () => resolve(true); }); },
+        saveFont: async (font) => { if(!DBMgr.db) await DBMgr.init(); return new Promise((resolve) => { const tx = DBMgr.db.transaction(['fonts'], 'readwrite'); tx.objectStore('fonts').put(font); tx.oncomplete = () => resolve(true); }); },
+        getAllFonts: async () => { if(!DBMgr.db) await DBMgr.init(); return new Promise((resolve) => { const req = DBMgr.db.transaction(['fonts'], 'readonly').objectStore('fonts').getAll(); req.onsuccess = () => resolve(req.result || []); }); },
+        deleteFont: async (id) => { if(!DBMgr.db) await DBMgr.init(); return new Promise((resolve) => { const tx = DBMgr.db.transaction(['fonts'], 'readwrite'); tx.objectStore('fonts').delete(id); tx.oncomplete = () => resolve(true); }); },
         showExportYearMenu: async () => {
             const meta = await DBMgr.getAllPostMeta();
             if(meta.length === 0) return alert('没有任何数据');
@@ -1333,9 +1373,14 @@
         addToCollection: async () => { if(BatchMgr.selectedIds.size === 0) return; ContextMenu.showCollectionSelector(Array.from(BatchMgr.selectedIds)); } 
     };
     
-    const ThemeMgr = { 
-        init: () => { 
-            if(localStorage.getItem('global_bg')) document.getElementById('global-bg-layer').style.backgroundImage = `url(${localStorage.getItem('global_bg')})`; 
+    const ThemeMgr = {
+        init: () => {
+            const fs = localStorage.getItem('theme_font_size') || '13.5';
+            document.documentElement.style.setProperty('--app-font-size', fs + 'px');
+            const slider = document.getElementById('fontSizeSlider');
+            if(slider) { slider.value = fs; document.getElementById('font-size-val').innerText = fs + 'px'; }
+
+            if(localStorage.getItem('global_bg')) document.getElementById('global-bg-layer').style.backgroundImage = `url(${localStorage.getItem('global_bg')})`;
             // 注意：顶部栏现在强制透明，不再读取 theme_top_bg
             if(localStorage.getItem('theme_bottom_bg')) document.documentElement.style.setProperty('--bottom-bar-bg', `url(${localStorage.getItem('theme_bottom_bg')})`); 
             if(localStorage.getItem('theme_post_bg')) document.documentElement.style.setProperty('--post-card-bg', `url(${localStorage.getItem('theme_post_bg')})`); 
@@ -1355,8 +1400,13 @@
             const preview = document.getElementById(`icon${index+1}Preview`); if(preview) preview.src = src; 
         }, 
         setIcon: (index, input) => { if (input.files && input.files[0]) { Utils.fileToBase64(input.files[0], (base64) => { localStorage.setItem(`theme_icon_${index}`, base64); ThemeMgr.renderIcon(index, base64); }); } }, 
-        setBarBg: (type, input) => { if (input.files && input.files[0]) { Utils.fileToBase64(input.files[0], (base64) => { localStorage.setItem(`theme_${type}_bg`, base64); document.documentElement.style.setProperty(`--${type}-bar-bg`, `url(${base64})`); }); } }, 
-        setPostBg: async (input) => { 
+        setBarBg: (type, input) => { if (input.files && input.files[0]) { Utils.fileToBase64(input.files[0], (base64) => { localStorage.setItem(`theme_${type}_bg`, base64); document.documentElement.style.setProperty(`--${type}-bar-bg`, `url(${base64})`); }); } },
+        setFontSize: (val) => {
+            document.documentElement.style.setProperty('--app-font-size', val + 'px');
+            document.getElementById('font-size-val').innerText = val + 'px';
+            localStorage.setItem('theme_font_size', val);
+        },
+        setPostBg: async (input) => {
             if (input.files && input.files[0]) { 
                 const compressed = await Utils.compressImage(input.files[0], 1024, 0.7);
                 Utils.fileToBase64(compressed, (base64) => { 
@@ -1371,10 +1421,166 @@
                 input.value = ''; 
             } 
         }, 
-        resetAll: () => { if(confirm('重置美化？')) { Object.keys(localStorage).forEach(key => { if(key.startsWith('theme_') || key === 'global_bg') localStorage.removeItem(key); }); location.reload(); } } 
+        resetAll: () => { if(confirm('重置美化？')) { Object.keys(localStorage).forEach(key => { if(key.startsWith('theme_') || key === 'global_bg') localStorage.removeItem(key); }); location.reload(); } }
     };
 
-    function handlePostClick(id, el) { 
+    const FontMgr = {
+        currentFontId: null,
+        init: async () => {
+            // 加载已保存的字体
+            const fonts = await DBMgr.getAllFonts();
+            for (const font of fonts) {
+                await FontMgr.loadFontFace(font);
+            }
+            // 应用上次选择的字体
+            const savedId = localStorage.getItem('theme_font_id');
+            if (savedId) {
+                const target = fonts.find(f => f.id == savedId);
+                if (target) FontMgr.applyFont(target);
+                else FontMgr.resetFont();
+            }
+        },
+        loadFontFace: async (font) => {
+            try {
+                let source;
+                if (font.type === 'url') {
+                    source = `url(${font.data})`;
+                } else {
+                    // Blob 转换为 URL
+                    const blobUrl = URL.createObjectURL(font.data);
+                    source = `url(${blobUrl})`;
+                }
+                const fontFace = new FontFace(font.name, source);
+                await fontFace.load();
+                document.fonts.add(fontFace);
+            } catch (e) {
+                console.error('加载字体失败:', font.name, e);
+            }
+        },
+        showMenu: async () => {
+            const fonts = await DBMgr.getAllFonts();
+            const currentId = localStorage.getItem('theme_font_id');
+            const listEl = document.getElementById('font-list-container');
+            
+            let html = `<div class="menu-item ${!currentId ? 'active' : ''}" onclick="FontMgr.resetFont()">
+                <div style="flex:1; text-align:left;">系统默认</div>
+                ${!currentId ? '✓' : ''}
+            </div>`;
+            
+            html += fonts.map(f => {
+                const isActive = currentId == f.id;
+                return `<div class="menu-item ${isActive ? 'active' : ''}" style="justify-content:space-between;">
+                    <div style="flex:1; text-align:left; font-family:'${f.name}'; font-size:16px;" onclick="FontMgr.applyById(${f.id})">${f.name}</div>
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        ${isActive ? '✓' : ''}
+                        <div style="color:#ff4d4f; font-size:18px; padding:0 10px;" onclick="FontMgr.delete(${f.id}, event)">×</div>
+                    </div>
+                </div>`;
+            }).join('');
+            
+            if (fonts.length === 0) {
+                html += `<div style="padding:20px; text-align:center; color:#999; font-size:12px;">暂无自定义字体</div>`;
+            }
+
+            listEl.innerHTML = html;
+            document.getElementById('fontOverlay').style.display = 'flex';
+        },
+        addFontClick: () => {
+            document.getElementById('addFontOverlay').style.display = 'flex';
+        },
+        addByUrl: async () => {
+            const url = prompt('请输入字体文件 URL (ttf/woff/otf):');
+            if (!url) return;
+            let name = prompt('请输入字体名称:', '网络字体');
+            if(!name) name = 'Font';
+            name += '_' + Date.now(); // URL方式建议保留时间戳避免重复
+            // 尝试加载验证
+            document.getElementById('loadingMask').style.display = 'flex';
+            document.getElementById('loadingText').innerText = '正在验证字体...';
+            try {
+                const fontFace = new FontFace(name, `url(${url})`);
+                await fontFace.load();
+                // 保存
+                const newFont = { id: Date.now(), name: name, type: 'url', data: url };
+                await DBMgr.saveFont(newFont);
+                await FontMgr.loadFontFace(newFont);
+                FontMgr.applyFont(newFont);
+                document.getElementById('addFontOverlay').style.display = 'none';
+                FontMgr.showMenu();
+            } catch(e) {
+                alert('字体加载失败，请检查URL是否有效且允许跨域');
+            } finally {
+                document.getElementById('loadingMask').style.display = 'none';
+            }
+        },
+        handleFileSelect: async (input) => {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                let customName = prompt('给字体起个名字 (留空使用文件名):');
+                if (customName === null) { input.value = ''; return; } // 取消
+                
+                let name = customName.trim();
+                if (!name) name = file.name.split('.')[0];
+                
+                document.getElementById('loadingMask').style.display = 'flex';
+                document.getElementById('loadingText').innerText = '正在处理字体...';
+                
+                try {
+                    // 读取为 Blob 直接保存 (比 Base64 省空间且性能更好)
+                    const newFont = { id: Date.now(), name: name, type: 'blob', data: file };
+                    
+                    // 验证
+                    const blobUrl = URL.createObjectURL(file);
+                    const fontFace = new FontFace(name, `url(${blobUrl})`);
+                    await fontFace.load();
+                    
+                    await DBMgr.saveFont(newFont);
+                    await FontMgr.loadFontFace(newFont);
+                    FontMgr.applyFont(newFont);
+                    
+                    document.getElementById('addFontOverlay').style.display = 'none';
+                    FontMgr.showMenu();
+                } catch(e) {
+                    console.error(e);
+                    alert('字体文件解析失败');
+                } finally {
+                    input.value = '';
+                    document.getElementById('loadingMask').style.display = 'none';
+                }
+            }
+        },
+        applyById: async (id) => {
+            const fonts = await DBMgr.getAllFonts();
+            const target = fonts.find(f => f.id == id);
+            if(target) FontMgr.applyFont(target);
+        },
+        applyFont: (font) => {
+            document.documentElement.style.setProperty('--app-font', `"${font.name}", var(--default-font)`);
+            localStorage.setItem('theme_font_id', font.id);
+            localStorage.setItem('theme_font_name', font.name);
+            document.getElementById('current-font-name').innerText = font.name;
+            FontMgr.showMenu(); // 刷新选中状态
+        },
+        resetFont: () => {
+            document.documentElement.style.setProperty('--app-font', 'var(--default-font)');
+            localStorage.removeItem('theme_font_id');
+            localStorage.removeItem('theme_font_name');
+            document.getElementById('current-font-name').innerText = '默认';
+            FontMgr.showMenu();
+        },
+        delete: async (id, e) => {
+            e.stopPropagation();
+            if(confirm('确定删除此字体？')) {
+                await DBMgr.deleteFont(id);
+                if (localStorage.getItem('theme_font_id') == id) {
+                    FontMgr.resetFont();
+                }
+                FontMgr.showMenu();
+            }
+        }
+    };
+
+    function handlePostClick(id, el) {
         if(BatchMgr.active) { BatchMgr.toggleSelect(id, el); } 
         else { if (document.getElementById('view-collection-detail').classList.contains('active')) { DetailRenderer.open(id, ColDetailMgr.currentColId); } else { DetailRenderer.open(id); } } 
     }
@@ -1391,7 +1597,8 @@
         if(localStorage.getItem('profile_name')) document.getElementById('userName').innerText = localStorage.getItem('profile_name');
         if(localStorage.getItem('profile_id')) document.getElementById('userId').innerText = localStorage.getItem('profile_id');
         if(localStorage.getItem('profile_ip')) document.getElementById('userIp').innerText = localStorage.getItem('profile_ip');
-        ThemeMgr.init(); 
+        ThemeMgr.init();
+        FontMgr.init(); // 初始化字体
         HomeRenderer.updateIcon();
         HomeRenderer.resetAndRender();
 
@@ -1402,4 +1609,3 @@
     });
 </script>
 </body>
-
