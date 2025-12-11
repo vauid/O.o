@@ -216,8 +216,9 @@
     .d-content { padding: 10px 20px; font-size: 1.11rem; line-height: 1.8; color: #333; white-space: normal; word-wrap: break-word; }
     /* Markdoom 样式系统 */
     .d-content h1 { font-size: 1.7em; font-weight: 800; color: #111; margin: 25px 0 15px; letter-spacing: -0.5px; line-height: 1.3; }
-    .d-content h2 { font-size: 1.4em; font-weight: 700; color: #333; margin: 20px 0 10px; border-bottom: 2px solid #f0f0f0; padding-bottom: 5px; }
+    .d-content h2 { font-size: 1.4em; font-weight: 700; color: #333; margin: 20px 0 10px; }
     .d-content h3 { font-size: 1.15em; font-weight: 700; color: #555; margin: 15px 0 8px; }
+    .d-content hr { border: none; height: 1px; background: #f0f0f0; margin: 20px 0; }
     .d-content .md-subtext { font-size: 0.85em; color: #999; margin-top: -5px; margin-bottom: 10px; display: block; }
     .d-content .md-ul-item { padding-left: 20px; position: relative; margin-bottom: 4px; }
     .d-content .md-ul-item::before { content: ""; width: 6px; height: 6px; background: #333; border-radius: 50%; position: absolute; left: 6px; top: 10px; }
@@ -694,6 +695,7 @@
                 </div>
                 <div style="margin-top:15px; display:flex; gap:10px;">
                     <div style="flex:1; background:#333; color:#fff; text-align:center; padding:8px; border-radius:4px; font-size:0.89rem; cursor:pointer;" onclick="GitHubMgr.testUpload()">立即备份</div>
+                    <div style="flex:1; background:#1890ff; color:#fff; text-align:center; padding:8px; border-radius:4px; font-size:0.89rem; cursor:pointer;" onclick="GitHubMgr.restoreLatest()">恢复最新</div>
                     <div style="flex:1; background:#f5f5f5; color:#666; text-align:center; padding:8px; border-radius:4px; font-size:0.89rem; cursor:pointer;" onclick="GitHubMgr.checkStatus()">检查状态</div>
                 </div>
                 <div id="gh-status-msg" style="margin-top:10px; font-size:0.74rem; color:#999;"></div>
@@ -839,8 +841,12 @@
             let l = line;
             let rowHtml = '';
             
+            // 0. 分割线 (---)
+            if (l.trim() === '---') {
+                rowHtml = '<hr>';
+            }
             // 1. 标题 (#, ##, ###)
-            if (l.match(/^###\s/)) {
+            else if (l.match(/^###\s/)) {
                 rowHtml = `<h3>${parseInline(l.substring(4))}</h3>`;
             } else if (l.match(/^##\s/)) {
                 rowHtml = `<h2>${parseInline(l.substring(3))}</h2>`;
@@ -1070,8 +1076,11 @@
         importData: async (input) => {
             const file = input.files[0]; if(!file) return;
             if(!confirm('导入将覆盖当前数据，确定？')) return;
+            await DBMgr.processImport(file);
+            input.value = '';
+        },
+        processImport: async (file) => {
             document.getElementById('loadingMask').style.display = 'flex';
-            
             try {
                 // 1. 检查是否为 ZIP 文件
                 if (file.name.toLowerCase().endsWith('.zip')) {
@@ -1149,9 +1158,9 @@
                         postStore.put(p);
                     }
                     
-                    tx.oncomplete = () => { 
-                        alert('恢复成功！'); 
-                        location.reload(); 
+                    tx.oncomplete = () => {
+                        alert('恢复成功！');
+                        location.reload();
                     };
                     
                     tx.onerror = (e) => {
@@ -1165,20 +1174,20 @@
                         try {
                             const json = JSON.parse(e.target.result);
                             const tx = DBMgr.db.transaction(['posts', 'collections'], 'readwrite');
-                            tx.objectStore('posts').clear(); 
+                            tx.objectStore('posts').clear();
                             tx.objectStore('collections').clear();
                             
                             if(json.localStorage) Object.keys(json.localStorage).forEach(key => localStorage.setItem(key, json.localStorage[key]));
                             if(json.collections) for (let col of json.collections) tx.objectStore('collections').put(col);
-                            if(json.posts || Array.isArray(json)) { 
-                                const posts = json.posts || json; 
-                                for (let post of posts) { tx.objectStore('posts').put(post); } 
+                            if(json.posts || Array.isArray(json)) {
+                                const posts = json.posts || json;
+                                for (let post of posts) { tx.objectStore('posts').put(post); }
                             }
                             tx.oncomplete = () => { alert('恢复成功！'); location.reload(); };
-                        } catch(err) { 
-                            alert('JSON 解析失败: ' + err.message); 
-                        } finally { 
-                            document.getElementById('loadingMask').style.display = 'none'; 
+                        } catch(err) {
+                            alert('JSON 解析失败: ' + err.message);
+                        } finally {
+                            document.getElementById('loadingMask').style.display = 'none';
                         }
                     };
                     reader.readAsText(file);
@@ -1992,6 +2001,73 @@
                     alert('连接失败，请检查 Token 或 仓库路径');
                 }
             } catch(e) { alert('网络错误: ' + e.message); }
+        },
+        restoreLatest: async () => {
+            if(!GitHubMgr.config.token || !GitHubMgr.config.repo) return alert('请先在配置中填写 Token 和 仓库路径');
+            if(!confirm('⚠️ 警告：这将下载最新的自动备份并覆盖当前所有数据！\n\n确定要继续吗？')) return;
+
+            document.getElementById('loadingMask').style.display = 'flex';
+            document.getElementById('loadingText').innerText = '正在连接 GitHub...';
+
+            try {
+                // 1. 获取文件列表
+                const url = `https://api.github.com/repos/${GitHubMgr.config.repo}/contents/`;
+                const res = await fetch(url, { headers: { 'Authorization': `token ${GitHubMgr.config.token}` } });
+                
+                if(!res.ok) {
+                    if(res.status === 404) throw new Error('仓库不存在或路径错误');
+                    if(res.status === 401) throw new Error('Token 无效或无权限');
+                    throw new Error('获取列表失败: ' + res.status);
+                }
+                
+                const files = await res.json();
+                
+                // 2. 筛选自动备份文件 (AutoBackup_xxx.zip)
+                const backups = files.filter(f => f.name.startsWith('AutoBackup_') && f.name.endsWith('.zip'));
+                if(backups.length === 0) throw new Error('仓库中没有找到任何自动备份文件');
+
+                // 3. 按文件名中的时间戳降序排序
+                backups.sort((a, b) => {
+                    const getTs = (name) => {
+                        // 提取最后一段数字: AutoBackup_2025-12-11_1702281600123.zip -> 1702281600123
+                        const match = name.match(/_(\d+)\.zip$/);
+                        return match ? parseInt(match[1]) : 0;
+                    };
+                    return getTs(b.name) - getTs(a.name);
+                });
+
+                const latest = backups[0];
+                console.log('找到最新备份:', latest.name);
+                document.getElementById('loadingText').innerText = '正在下载: ' + latest.name;
+
+                // 4. 下载文件
+                // 注意：对于私有仓库，需要使用 API 的 raw 格式下载
+                const dlUrl = `https://api.github.com/repos/${GitHubMgr.config.repo}/contents/${latest.name}`;
+                const dlRes = await fetch(dlUrl, {
+                    headers: {
+                        'Authorization': `token ${GitHubMgr.config.token}`,
+                        'Accept': 'application/vnd.github.v3.raw'
+                    }
+                });
+
+                if(!dlRes.ok) throw new Error('下载文件失败: ' + dlRes.status);
+                
+                const blob = await dlRes.blob();
+                
+                // 5. 构造 File 对象并调用导入
+                // File 构造函数需要: [blob parts], filename, options
+                const file = new File([blob], latest.name, { type: 'application/zip' });
+                
+                document.getElementById('loadingText').innerText = '下载完成，准备导入...';
+                
+                // 调用重构后的导入逻辑
+                await DBMgr.processImport(file);
+
+            } catch(e) {
+                console.error(e);
+                alert('恢复失败: ' + e.message);
+                document.getElementById('loadingMask').style.display = 'none';
+            }
         }
     };
 
