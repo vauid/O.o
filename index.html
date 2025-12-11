@@ -23,11 +23,12 @@
         --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
     
-    html, body { width: 100%; height: 100%; overflow: hidden; -webkit-text-size-adjust: 100%; }
+    html { font-size: var(--app-font-size, 13.5px); width: 100%; height: 100%; overflow: hidden; -webkit-text-size-adjust: 100%; }
+    body { width: 100%; height: 100%; overflow: hidden; }
     * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
     
     body {
-        font-size: var(--app-font-size, 13.5px);
+        font-size: 1rem;
         font-family: var(--app-font, var(--default-font)) !important;
         background-color: transparent; color: var(--text-main);
         -webkit-user-select: none; user-select: none; line-height: 1.5;
@@ -63,10 +64,10 @@
     
     .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 4000; display: none; align-items: center; justify-content: center; }
     .context-menu { background: #fff; width: 80%; border-radius: 12px; overflow: hidden; animation: popUp 0.2s ease-out; max-height: 80vh; overflow-y: auto; }
-    .menu-item { padding: 14px; text-align: center; border-bottom: 1px solid #eee; font-size: 14px; color: #333; display: flex; justify-content: center; align-items: center; position: relative; }
+    .menu-item { padding: 14px; text-align: center; border-bottom: 1px solid #eee; font-size: 1.04rem; color: #333; display: flex; justify-content: center; align-items: center; position: relative; }
     .menu-item.danger { color: #ff4d4f; }
     .menu-item.active { color: var(--active-color); font-weight: bold; background: #f7f7f7; }
-    .menu-section-title { background: #f9f9f9; color: #999; font-size: 11px; padding: 8px 15px; font-weight: bold; text-align: left; border-bottom: 1px solid #eee; }
+    .menu-section-title { background: #f9f9f9; color: #999; font-size: 0.81rem; padding: 8px 15px; font-weight: bold; text-align: left; border-bottom: 1px solid #eee; }
     @keyframes popUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
     .image-viewer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 5000; display: none; flex-direction: column; justify-content: center; align-items: center; animation: fadeIn 0.2s ease; }
@@ -117,7 +118,7 @@
         border-radius: 18px; padding: 5px 12px; display: flex; align-items: center; flex: 1; margin-right: 10px; 
         backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); 
     }
-    .search-box input { border: none; background: transparent; font-size: 13px; width: 100%; color: #333; }
+    .search-box input { border: none; background: transparent; font-size: 0.96rem; width: 100%; color: #333; }
     
     .posts-container { padding: 12px; transition: all 0.3s ease; min-height: 300px; display: block; }
 
@@ -136,11 +137,11 @@
     .post-card:active { transform: scale(0.98); }
     .post-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 12px 6px; }
     .post-date { display: flex; align-items: baseline; gap: 4px; }
-    .date-day { font-size: 20px; font-weight: 600; color: #333; line-height: 1; }
-    .date-info { font-size: 11px; color: #999; }
+    .date-day { font-size: 1.48rem; font-weight: 600; color: #333; line-height: 1; }
+    .date-info { font-size: 0.81rem; color: #999; }
     .post-content-wrap { padding: 8px 12px 12px; }
-    .post-title { font-size: 15px; font-weight: 600; color: #333; line-height: 1.4; margin-bottom: 6px; }
-    .post-text { font-size: 13px; color: #555; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;}
+    .post-title { font-size: 1.11rem; font-weight: 600; color: #333; line-height: 1.4; margin-bottom: 6px; }
+    .post-text { font-size: 0.96rem; color: #555; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;}
     .pin-mark { position: absolute; top: 8px; right: 10px; width: 16px; height: 16px; display: none; z-index: 5; color: #666; }
     .pin-mark svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
     .is-top .pin-mark { display: block; }
@@ -154,21 +155,21 @@
     /* Grid 模式下图片 1:1 强制 */
     .post-img-grid img { width: 100%; height: auto; display: block; aspect-ratio: 1/1; object-fit: cover; }
 
-    .img-count-badge { position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 10px; display: flex; align-items: center; gap: 3px; pointer-events: none; }
+    .img-count-badge { position: absolute; bottom: 5px; right: 5px; background: rgba(0,0,0,0.6); color: #fff; font-size: 0.74rem; padding: 2px 6px; border-radius: 10px; display: flex; align-items: center; gap: 3px; pointer-events: none; }
     
     .timeline-wrapper { display: none; padding: 0 14px; }
     .month-section { margin-bottom: 20px; content-visibility: auto; contain-intrinsic-size: 500px; }
     .month-header { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 0 10px; border-bottom: 1px dashed #eee; margin-bottom: 10px; }
     .month-left { display: flex; align-items: baseline; gap: 5px; }
-    .month-num { font-size: 22px; font-weight: bold; color: #333; }
-    .year-num { font-size: 13px; color: #999; }
-    .post-count-badge { background: #f0f0f0; color: #999; font-size: 10px; padding: 2px 8px; border-radius: 10px; }
+    .month-num { font-size: 1.63rem; font-weight: bold; color: #333; }
+    .year-num { font-size: 0.96rem; color: #999; }
+    .post-count-badge { background: #f0f0f0; color: #999; font-size: 0.74rem; padding: 2px 8px; border-radius: 10px; }
     .grid-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
     .grid-item { aspect-ratio: 1 / 1; background: #f7f7f7; border-radius: 4px; overflow: hidden; position: relative; cursor: pointer; }
     .grid-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
     .grid-item:active img { transform: scale(0.95); }
     .text-card { width: 100%; height: 100%; background: #fff; padding: 8px; display: flex; align-items: flex-start; border: 1px solid #f0f0f0; border-radius: 4px; }
-    .text-content-sm { font-size: 11px; line-height: 1.4; color: #666; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; width: 100%; word-break: break-all; }
+    .text-content-sm { font-size: 0.81rem; line-height: 1.4; color: #666; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; width: 100%; word-break: break-all; }
 
     .editor-header { display: flex; justify-content: space-between; align-items: center; padding: calc(8px + var(--safe-top)) 15px 8px 15px; height: calc(46px + var(--safe-top)); background: #fff; flex-shrink: 0; }
     .editor-content { padding: 15px; overflow-y: auto; flex: 1; position: relative;}
@@ -210,18 +211,18 @@
     .d-slider::-webkit-scrollbar { display: none; }
     .d-slider-item { flex: 0 0 100%; width: 100%; scroll-snap-align: center; scroll-snap-stop: always; display: flex; justify-content: center; align-items: center; background: #000; min-height: 250px; }
     .d-slider-item img { max-width: 100%; max-height: 80vh; object-fit: contain; display: block; }
-    .d-slider-indicator { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); color: #fff; padding: 3px 8px; border-radius: 10px; font-size: 11px; font-weight: bold; pointer-events: none; }
-    .d-content { padding: 10px 20px; font-size: 15px; line-height: 1.8; color: #333; white-space: pre-wrap; }
-    .d-content.text-mode { font-size: 16px; line-height: 1.8; letter-spacing: 0.5px; text-align: left; padding: 15px; }
-    .d-meta { padding: 8px 20px; font-size: 11px; color: #bbb; display: flex; justify-content: space-between; margin-bottom: 15px; }
+    .d-slider-indicator { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); color: #fff; padding: 3px 8px; border-radius: 10px; font-size: 0.81rem; font-weight: bold; pointer-events: none; }
+    .d-content { padding: 10px 20px; font-size: 1.11rem; line-height: 1.8; color: #333; white-space: pre-wrap; }
+    .d-content.text-mode { font-size: 1.19rem; line-height: 1.8; letter-spacing: 0.5px; text-align: left; padding: 15px; }
+    .d-meta { padding: 8px 20px; font-size: 0.81rem; color: #bbb; display: flex; justify-content: space-between; margin-bottom: 15px; }
     .divider { height: 1px; background: #f0f0f0; margin: 0 20px; }
     .comments-section { padding: 15px; background: transparent; }
     .comment-item { display: flex; margin-bottom: 20px; }
     .c-avatar { width: 32px; height: 32px; border-radius: 50%; margin-right: 10px; background: #f0f0f0; }
     .c-right { flex: 1; }
-    .c-top { display: flex; justify-content: space-between; margin-bottom: 3px; font-size: 12px; color: #999; }
-    .c-text { font-size: 13.5px; line-height: 1.5; color: #333; }
-    .c-date { font-size: 11px; color: #ccc; margin-top: 4px; }
+    .c-top { display: flex; justify-content: space-between; margin-bottom: 3px; font-size: 0.89rem; color: #999; }
+    .c-text { font-size: 1rem; line-height: 1.5; color: #333; }
+    .c-date { font-size: 0.81rem; color: #ccc; margin-top: 4px; }
     
     /* 评论输入栏 (应用底部背景) */
     .input-bar { 
@@ -233,10 +234,10 @@
         padding: 6px 15px; padding-bottom: calc(6px + var(--safe-bottom)); 
         display: flex; align-items: center; z-index: 3002; 
     }
-    .input-bar input { flex: 1; background: rgba(255,255,255,0.7); backdrop-filter: blur(5px); border-radius: 18px; padding: 8px 15px; border: 1px solid rgba(0,0,0,0.1); font-size: 13px; margin-right: 10px; }
-    .send-btn { color: #333; font-weight: bold; padding: 5px 10px; cursor: pointer; font-size: 13px; }
+    .input-bar input { flex: 1; background: rgba(255,255,255,0.7); backdrop-filter: blur(5px); border-radius: 18px; padding: 8px 15px; border: 1px solid rgba(0,0,0,0.1); font-size: 0.96rem; margin-right: 10px; }
+    .send-btn { color: #333; font-weight: bold; padding: 5px 10px; cursor: pointer; font-size: 0.96rem; }
     .static-input-bar { margin: 0; background: transparent; padding: 10px 20px; display: flex; align-items: center; }
-    .static-input-bar input { flex: 1; background: rgba(255,255,255,0.8); border-radius: 20px; padding: 10px 15px; border: 1px solid rgba(0,0,0,0.1); font-size: 13px; margin-right: 10px; backdrop-filter: blur(5px); }
+    .static-input-bar input { flex: 1; background: rgba(255,255,255,0.8); border-radius: 20px; padding: 10px 15px; border: 1px solid rgba(0,0,0,0.1); font-size: 0.96rem; margin-right: 10px; backdrop-filter: blur(5px); }
     
     /* 阅读工具栏 (应用底部背景) */
     .reading-toolbar-bottom { 
@@ -247,18 +248,18 @@
         backdrop-filter: blur(10px); 
         border-top: 1px solid #eee; display: none; justify-content: space-between; align-items: center; padding-left: 10px; padding-right: 10px; z-index: 3005; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); 
     }
-    .rt-btn { flex: 1; text-align: center; color: #333; font-size: 13px; font-weight: 500; cursor: pointer; padding: 10px; }
+    .rt-btn { flex: 1; text-align: center; color: #333; font-size: 0.96rem; font-weight: 500; cursor: pointer; padding: 10px; }
     .rt-btn:active { opacity: 0.6; }
     .rt-btn.disabled { color: #ccc; pointer-events: none; }
     
     .dir-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 4000; display: none; flex-direction: column; justify-content: flex-end; }
     .dir-panel { background: #fff; width: 100%; height: 70vh; border-radius: 16px 16px 0 0; display: flex; flex-direction: column; animation: slideUpDir 0.3s ease; padding-bottom: var(--safe-bottom); }
-    .dir-header { padding: 12px; text-align: center; font-weight: bold; border-bottom: 1px solid #eee; font-size: 15px; position: relative;}
+    .dir-header { padding: 12px; text-align: center; font-weight: bold; border-bottom: 1px solid #eee; font-size: 1.11rem; position: relative;}
     .dir-close { position: absolute; right: 15px; top: 12px; color: #999; cursor: pointer; }
     .dir-list { flex: 1; overflow-y: auto; padding: 10px 0; }
-    .dir-item { padding: 12px 20px; font-size: 13px; color: #333; border-bottom: 1px solid #f9f9f9; display: flex; justify-content: space-between; }
+    .dir-item { padding: 12px 20px; font-size: 0.96rem; color: #333; border-bottom: 1px solid #f9f9f9; display: flex; justify-content: space-between; }
     .dir-item.active { color: var(--text-main); font-weight: bold; background: #f5f5f5; }
-    .dir-item.active::after { content: '当前'; font-size: 11px; color: #999; font-weight: normal;}
+    .dir-item.active::after { content: '当前'; font-size: 0.81rem; color: #999; font-weight: normal;}
     @keyframes slideUpDir { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
     .post-html-preview { width: 100%; padding-top: 100%; height: 0; position: relative; background: #fff; overflow: hidden; }
@@ -279,8 +280,8 @@
     .col-item { display: flex; padding: 12px; background: #fff; border-radius: 10px; margin: 12px; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); cursor: pointer; }
     .col-cover { width: 70px; height: 70px; border-radius: 10px; background: #eee; object-fit: cover; margin-right: 12px; }
     .col-info { flex: 1; }
-    .col-title { font-size: 15px; font-weight: bold; color: #333; margin-bottom: 4px; }
-    .col-desc { font-size: 12px; color: #999; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .col-title { font-size: 1.11rem; font-weight: bold; color: #333; margin-bottom: 4px; }
+    .col-desc { font-size: 0.89rem; color: #999; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .cd-header { position: relative; height: 260px; overflow: hidden; color: #fff; display: flex; flex-direction: column; padding-top: var(--safe-top); }
     .cd-bg-layer { position: absolute; top:0; left:0; width:100%; height:100%; background-size: cover; background-position: center; filter: blur(20px) brightness(0.8); transform: scale(1.2); z-index: 1; }
     .cd-navbar { position: relative; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; height: 44px; }
@@ -288,17 +289,17 @@
     .cd-info-top { display: flex; gap: 15px; align-items: flex-start; margin-bottom: 15px; }
     .cd-cover { width: 90px; height: 90px; border-radius: 10px; object-fit: cover; background: #fff; flex-shrink: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
     .cd-text { flex: 1; padding-top: 5px; }
-    .cd-title { font-size: 18px; font-weight: bold; margin-bottom: 6px; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-    .cd-meta { font-size: 11px; opacity: 0.9; display: flex; align-items: center; gap: 5px; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+    .cd-title { font-size: 1.33rem; font-weight: bold; margin-bottom: 6px; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+    .cd-meta { font-size: 0.81rem; opacity: 0.9; display: flex; align-items: center; gap: 5px; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
     .cd-user-avatar { width: 14px; height: 14px; border-radius: 50%; }
     .cd-stats { display: flex; justify-content: space-between; text-align: center; padding: 0 10px; }
     .cd-stat-item { flex: 1; }
-    .cd-stat-num { font-size: 15px; font-weight: bold; display: block; outline: 1px dashed transparent; }
+    .cd-stat-num { font-size: 1.11rem; font-weight: bold; display: block; outline: 1px dashed transparent; }
     .cd-stat-num:focus { outline: 1px dashed rgba(255,255,255,0.5); background: rgba(0,0,0,0.2); border-radius:4px; }
-    .cd-stat-label { font-size: 10px; opacity: 0.7; margin-top: 4px; display: block; }
+    .cd-stat-label { font-size: 0.74rem; opacity: 0.7; margin-top: 4px; display: block; }
     .cd-body { position: relative; z-index: 20; background: transparent; border-radius: 16px 16px 0 0; margin-top: -16px; min-height: 500px; padding: 15px 10px 80px 10px; }
     .cd-footer { position: fixed; bottom: 0; left: 0; width: 100%; height: calc(60px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border-top: 1px solid rgba(255,255,255,0.3); z-index: 100; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 0 20px; }
-    .cd-btn { flex: 1; height: 40px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; }
+    .cd-btn { flex: 1; height: 40px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.96rem; }
     .cd-btn-sub { background: #f0f0f0; color: #333; cursor: pointer;}
     .cd-btn-read { background: #333; color: #fff; cursor: pointer; }
 
@@ -308,21 +309,21 @@
     .avatar-wrapper { position: absolute; top: -40px; width: 80px; height: 80px; background: #fff; border-radius: 50%; padding: 3px; }
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
     .user-info { text-align: center; margin-top: 5px; }
-    .user-name { font-size: 18px; font-weight: bold; margin-bottom: 4px; outline: 1px dashed transparent; transition: outline 0.2s; }
+    .user-name { font-size: 1.33rem; font-weight: bold; margin-bottom: 4px; outline: 1px dashed transparent; transition: outline 0.2s; }
     .user-name:focus, .editable-span:focus { outline: 1px dashed #333; background: rgba(0,0,0,0.02); }
-    .user-meta { font-size: 11px; color: #999; }
+    .user-meta { font-size: 0.81rem; color: #999; }
     .editable-span { border-bottom: none; }
     .profile-tab-container { display: flex; border-bottom: 1px solid rgba(0,0,0,0.05); background: transparent; margin-top: 10px; }
-    .p-tab { flex: 1; text-align: center; padding: 12px 0; font-weight: bold; color: #999; cursor: pointer; transition: color 0.2s; font-size: 14px; }
+    .p-tab { flex: 1; text-align: center; padding: 12px 0; font-weight: bold; color: #999; cursor: pointer; transition: color 0.2s; font-size: 1.04rem; }
     .p-tab.active { color: #333; border-bottom: 2px solid #333; }
-    .new-col-btn { margin: 15px; padding: 12px; background: #fff; border: 1px solid #eee; border-radius: 8px; text-align: center; color: #666; cursor: pointer; font-weight: bold; font-size: 13px;}
+    .new-col-btn { margin: 15px; padding: 12px; background: #fff; border: 1px solid #eee; border-radius: 8px; text-align: center; color: #666; cursor: pointer; font-weight: bold; font-size: 0.96rem;}
 
     .theme-page { padding: calc(15px + var(--safe-top)) 15px 15px 15px; background: transparent; min-height: 100vh; }
-    .btn-white { display: flex; justify-content: space-between; width: 100%; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px; margin-bottom: 10px; font-size: 13px; cursor: pointer; }
+    .btn-white { display: flex; justify-content: space-between; width: 100%; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 12px; margin-bottom: 10px; font-size: 0.96rem; cursor: pointer; }
     .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
     .theme-icon-box { background: #f9f9f9; border: 1px solid #eee; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
     .theme-icon-box img { width: 28px; height: 28px; margin-bottom: 5px; object-fit: cover; }
-    .theme-icon-box span { font-size: 11px; color: #666; }
+    .theme-icon-box span { font-size: 0.81rem; color: #666; }
 </style>
 </head>
 <body>
@@ -563,37 +564,37 @@
             <div style="font-size:12px; color:#999; margin:20px 0 8px;">数据导出</div>
             <div class="btn-white" onclick="DBMgr.showExportYearMenu()">
                 <span>备份数据 (支持选择保存位置)</span>
-                <span style="color:#999;font-size:12px;">ZIP</span>
+                <span style="color:#999;font-size:0.89rem;">ZIP</span>
             </div>
             <div class="btn-white" onclick="DBMgr.exportTextOnly()">
                 <span>仅导出文字 (JSON)</span>
-                <span style="color:#999;font-size:12px;">轻量级</span>
+                <span style="color:#999;font-size:0.89rem;">轻量级</span>
             </div>
 
-            <div style="font-size:12px; color:#999; margin:20px 0 8px;">数据导入</div>
+            <div style="font-size:0.89rem; color:#999; margin:20px 0 8px;">数据导入</div>
             <div class="btn-white" style="position:relative;">
                 <span>恢复数据 (选择 ZIP 或 JSON 文件)</span>
                 <input type="file" class="hidden-input" style="display:block; opacity:0; position:absolute; top:0; left:0; width:100%; height:100%;" onchange="DBMgr.importData(this)">
             </div>
             <div class="btn-white" onclick="DBMgr.clearAll()" style="color:red; margin-top:10px;"><span>清空所有数据</span></div>
 
-            <div style="font-size:12px; color:#999; margin:20px 0 8px;">栏目外观</div>
+            <div style="font-size:0.89rem; color:#999; margin:20px 0 8px;">栏目外观</div>
             <!-- 移除了顶部栏背景设置，因为已经强制透明了 -->
             <div class="btn-white" onclick="document.getElementById('bottomBarInput').click()"><span>底部栏背景</span><input type="file" id="bottomBarInput" class="hidden-input" accept="image/*" onchange="ThemeMgr.setBarBg('bottom', this)"></div>
             <div class="btn-white" onclick="document.getElementById('globalBgInput').click()"><span>全局背景图</span><input type="file" id="globalBgInput" class="hidden-input" accept="image/*" onchange="setGlobalBg(this)"></div>
             <div class="btn-white" onclick="document.getElementById('postBgInput').click()"><span>帖子默认名片背景</span><input type="file" id="postBgInput" class="hidden-input" accept="image/*" onchange="ThemeMgr.setPostBg(this)"></div>
 
-            <div style="font-size:12px; color:#999; margin:20px 0 8px;">字体设置</div>
-            <div class="btn-white" onclick="FontMgr.showMenu()"><span>字体管理</span><span id="current-font-name" style="color:#999;font-size:12px;">默认</span></div>
+            <div style="font-size:0.89rem; color:#999; margin:20px 0 8px;">字体设置</div>
+            <div class="btn-white" onclick="FontMgr.showMenu()"><span>字体管理</span><span id="current-font-name" style="color:#999;font-size:0.89rem;">默认</span></div>
             <div class="btn-white" style="display:block; padding-bottom:5px;">
                 <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
                     <span>全局字号</span>
-                    <span id="font-size-val" style="color:#999;font-size:12px;">13.5px</span>
+                    <span id="font-size-val" style="color:#999;font-size:0.89rem;">13.5px</span>
                 </div>
                 <input type="range" min="10" max="22" step="0.5" value="13.5" id="fontSizeSlider" style="width:100%; height:4px;" oninput="ThemeMgr.setFontSize(this.value)">
             </div>
 
-            <div style="font-size:12px; color:#999; margin:20px 0 8px;">底部图标</div>
+            <div style="font-size:0.89rem; color:#999; margin:20px 0 8px;">底部图标</div>
             <div class="theme-grid">
                 <div class="theme-icon-box" onclick="document.getElementById('icon1Input').click()"><img id="icon1Preview" src=""><span style="margin-top:5px;">首页</span><input type="file" id="icon1Input" class="hidden-input" accept="image/*" onchange="ThemeMgr.setIcon(0, this)"></div>
                 <div class="theme-icon-box" onclick="document.getElementById('icon2Input').click()"><img id="icon2Preview" src=""><span style="margin-top:5px;">HTML</span><input type="file" id="icon2Input" class="hidden-input" accept="image/*" onchange="ThemeMgr.setIcon(1, this)"></div>
