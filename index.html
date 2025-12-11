@@ -213,7 +213,22 @@
     .d-slider-item { flex: 0 0 100%; width: 100%; scroll-snap-align: center; scroll-snap-stop: always; display: flex; justify-content: center; align-items: center; background: #000; min-height: 250px; }
     .d-slider-item img { max-width: 100%; max-height: 80vh; object-fit: contain; display: block; }
     .d-slider-indicator { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.5); color: #fff; padding: 3px 8px; border-radius: 10px; font-size: 0.81rem; font-weight: bold; pointer-events: none; }
-    .d-content { padding: 10px 20px; font-size: 1.11rem; line-height: 1.8; color: #333; white-space: pre-wrap; }
+    .d-content { padding: 10px 20px; font-size: 1.11rem; line-height: 1.8; color: #333; white-space: normal; word-wrap: break-word; }
+    /* Markdoom 样式系统 */
+    .d-content h1 { font-size: 1.7em; font-weight: 800; color: #111; margin: 25px 0 15px; letter-spacing: -0.5px; line-height: 1.3; }
+    .d-content h2 { font-size: 1.4em; font-weight: 700; color: #333; margin: 20px 0 10px; border-bottom: 2px solid #f0f0f0; padding-bottom: 5px; }
+    .d-content h3 { font-size: 1.15em; font-weight: 700; color: #555; margin: 15px 0 8px; }
+    .d-content .md-subtext { font-size: 0.85em; color: #999; margin-top: -5px; margin-bottom: 10px; display: block; }
+    .d-content .md-ul-item { padding-left: 20px; position: relative; margin-bottom: 4px; }
+    .d-content .md-ul-item::before { content: ""; width: 6px; height: 6px; background: #333; border-radius: 50%; position: absolute; left: 6px; top: 10px; }
+    .d-content .md-ol-item { padding-left: 0; margin-bottom: 4px; display: flex; }
+    .d-content .md-ol-num { font-weight: bold; color: #333; margin-right: 8px; min-width: 20px; }
+    .d-content b { font-weight: bold; color: #000; }
+    .d-content i { font-style: italic; color: #666; font-family: Georgia, serif; }
+    .d-content u { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    .d-content s { color: #ccc; text-decoration: line-through; }
+    .d-content div { min-height: 1.5em; margin-bottom: 6px; }
+    
     .d-content.text-mode { font-size: 1.19rem; line-height: 1.8; letter-spacing: 0.5px; text-align: left; padding: 15px; }
     .d-meta { padding: 8px 20px; font-size: 0.81rem; color: #bbb; display: flex; justify-content: space-between; margin-bottom: 15px; }
     .divider { height: 1px; background: #f0f0f0; margin: 0 20px; }
@@ -269,14 +284,45 @@
     .html-fab-add { position: fixed; bottom: calc(70px + var(--safe-bottom)); right: 20px; width: 50px; height: 50px; background: #fff; color: #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 2200; cursor: pointer; transition: transform 0.2s; }
     .html-fab-add:active { transform: scale(0.95); }
     .html-fab-add svg { width: 24px; height: 24px; stroke: currentColor; stroke-width: 2; }
-    .html-center-back-btn { width: 44px; height: 44px; border-radius: 50%; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.02); display: flex; align-items: center; justify-content: center; cursor: pointer; margin: 30px auto 20px auto; }
-    .html-center-back-btn svg { width: 20px; height: 20px; stroke: #333; stroke-width: 2.5; fill: none; }
-    .html-footer-section { padding: 0 20px 80px 20px; }
-    .html-comment-input-line { display: flex; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-bottom: 20px; }
-    .html-comment-input-line input { flex: 1; border: none; font-size: 14px; background: transparent; padding: 5px 0; }
-    .html-comment-send { font-size: 14px; font-weight: bold; color: #333; cursor: pointer; padding: 5px; }
-    .html-comments-title { font-size: 15px; font-weight: bold; margin-bottom: 15px; color: #333; }
-    .html-comment-list-simple { min-height: 50px; }
+    
+    /* HTML 全屏详情页样式 */
+    #view-html-detail { position: relative; width: 100%; height: 100%; overflow: hidden; background: #fff; }
+    #html-iframe-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+    #html-detail-iframe { width: 100%; height: 100%; border: none; background: #fff; }
+    
+    .html-action-bar {
+        position: fixed; bottom: calc(20px + var(--safe-bottom)); left: 50%; transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
+        padding: 8px 15px; border-radius: 30px;
+        display: flex; gap: 15px; align-items: center;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        z-index: 3100; border: 1px solid rgba(0,0,0,0.05);
+    }
+    .hab-btn {
+        width: 36px; height: 36px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; color: #333; transition: background 0.2s;
+    }
+    .hab-btn:active { background: rgba(0,0,0,0.05); }
+    .hab-btn svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+    .html-comment-sheet {
+        position: fixed; bottom: 0; left: 0; width: 100%; height: 60vh;
+        background: #fff; border-radius: 20px 20px 0 0;
+        z-index: 3200; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex; flex-direction: column; box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        padding-bottom: var(--safe-bottom);
+    }
+    .html-comment-sheet.active { transform: translateY(0); }
+    .hcs-header { padding: 15px; text-align: center; font-weight: bold; border-bottom: 1px solid #eee; position: relative; color: #333; }
+    .hcs-close { position: absolute; right: 15px; top: 15px; color: #999; cursor: pointer; }
+    .hcs-body { flex: 1; overflow-y: auto; padding: 15px; }
+    .hcs-footer { padding: 10px 15px; border-top: 1px solid #eee; display: flex; align-items: center; gap: 10px; }
+    .hcs-input { flex: 1; background: #f5f5f5; border: none; border-radius: 20px; padding: 8px 15px; font-size: 0.96rem; }
+    .hcs-send { color: #333; font-weight: bold; padding: 5px 10px; cursor: pointer; font-size: 0.96rem; }
+    
+    .sheet-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 3150; display: none; opacity: 0; transition: opacity 0.3s; }
+    .sheet-overlay.active { display: block; opacity: 1; }
 
     .col-item { display: flex; padding: 12px; background: #fff; border-radius: 10px; margin: 12px; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); cursor: pointer; }
     .col-cover { width: 70px; height: 70px; border-radius: 10px; background: #eee; object-fit: cover; margin-right: 12px; }
@@ -449,17 +495,38 @@
 
     <!-- HTML 详情页 -->
     <div id="view-html-detail" class="view">
-        <div id="html-iframe-wrapper" style="width:100%; min-height:100px;">
-            <iframe id="html-detail-iframe" scrolling="no" style="width:100%; height:0; border:none; display:block; background:#fff; overflow:hidden;"></iframe>
+        <div id="html-iframe-wrapper">
+            <iframe id="html-detail-iframe" sandbox="allow-scripts allow-same-origin"></iframe>
         </div>
-        <div class="html-footer-section">
-            <div class="html-center-back-btn" onclick="Router.back()"><svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></div>
-            <div class="html-comment-input-line">
-                <input type="text" id="html-comment-input" placeholder="写评论...">
-                <div class="html-comment-send" onclick="DetailRenderer.addHtmlComment()">发送</div>
+        
+        <!-- 悬浮操作栏 -->
+        <div class="html-action-bar">
+            <div class="hab-btn" onclick="Router.back()">
+                <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
             </div>
-            <div class="html-comments-title">评论</div>
-            <div id="html-comments-list-simple" class="html-comment-list-simple"></div>
+            <div style="width:1px; height:16px; background:#eee;"></div>
+            <div class="hab-btn" onclick="DetailRenderer.copyHtml()">
+                <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </div>
+            <div class="hab-btn" onclick="DetailRenderer.toggleHtmlComments()">
+                <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            </div>
+        </div>
+
+        <!-- 评论面板遮罩 -->
+        <div class="sheet-overlay" id="html-sheet-overlay" onclick="DetailRenderer.toggleHtmlComments(false)"></div>
+        
+        <!-- 评论面板 -->
+        <div class="html-comment-sheet" id="html-comment-sheet">
+            <div class="hcs-header">
+                评论
+                <div class="hcs-close" onclick="DetailRenderer.toggleHtmlComments(false)">×</div>
+            </div>
+            <div class="hcs-body" id="html-comments-list-simple"></div>
+            <div class="hcs-footer">
+                <input type="text" id="html-comment-input" class="hcs-input" placeholder="说点什么...">
+                <div class="hcs-send" onclick="DetailRenderer.addHtmlComment()">发送</div>
+            </div>
         </div>
     </div>
 
@@ -762,6 +829,71 @@
 </div>
 
 <script>
+    // Markdoom 解析器 (轻量级 Markdown)
+    function parseMarkdoom(text) {
+        if (!text) return '';
+        const lines = text.split('\n');
+        let html = '';
+        
+        lines.forEach(line => {
+            let l = line;
+            let rowHtml = '';
+            
+            // 1. 标题 (#, ##, ###)
+            if (l.match(/^###\s/)) {
+                rowHtml = `<h3>${parseInline(l.substring(4))}</h3>`;
+            } else if (l.match(/^##\s/)) {
+                rowHtml = `<h2>${parseInline(l.substring(3))}</h2>`;
+            } else if (l.match(/^#\s/)) {
+                rowHtml = `<h1>${parseInline(l.substring(2))}</h1>`;
+            }
+            // 2. 副文本 (-#)
+            else if (l.match(/^-#\s/)) {
+                rowHtml = `<span class="md-subtext">${parseInline(l.substring(3))}</span>`;
+            }
+            // 3. 无序列表 (* 或 -)
+            else if (l.match(/^[\*\-]\s/)) {
+                rowHtml = `<div class="md-ul-item">${parseInline(l.substring(2))}</div>`;
+            }
+            // 4. 有序列表 (1. )
+            else if (l.match(/^\d+\.\s/)) {
+                const match = l.match(/^(\d+\.)\s(.*)/);
+                if (match) {
+                    rowHtml = `<div class="md-ol-item"><span class="md-ol-num">${match[1]}</span><span>${parseInline(match[2])}</span></div>`;
+                } else {
+                     rowHtml = `<div>${parseInline(l)}</div>`;
+                }
+            }
+            // 5. 普通文本
+            else {
+                if (l.trim() === '') rowHtml = '<div style="height:10px"></div>';
+                else rowHtml = `<div>${parseInline(l)}</div>`;
+            }
+            html += rowHtml;
+        });
+        return html;
+    }
+
+    function parseInline(str) {
+        if (!str) return '';
+        let s = str;
+        // 基础 XSS 防护
+        s = s.replace(/&/g, "&").replace(/</g, "<").replace(/>/g, ">");
+        
+        // 1. 加粗斜体 (***)
+        s = s.replace(/\*\*\*(.*?)\*\*\*/g, '<b><i>$1</i></b>');
+        // 2. 加粗 (**)
+        s = s.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+        // 3. 斜体 (*)
+        s = s.replace(/\*([^\s\*].*?)\*/g, '<i>$1</i>');
+        // 4. 下划线 (__)
+        s = s.replace(/__(.*?)__/g, '<u>$1</u>');
+        // 5. 删除线 (~~)
+        s = s.replace(/~~(.*?)~~/g, '<s>$1</s>');
+        
+        return s;
+    }
+
     // 通用保存文件函数 - 核心修改：使用系统分享让用户选择
     function saveFileUniversal(blob, fileName) {
         if (window.plus) {
@@ -1195,12 +1327,16 @@
                 detailView.style.backgroundImage = ''; 
             }
             const bodyEl = document.getElementById('d-body-content'); let html = ''; const images = post.images || (post.image ? [post.image] : []);
-            if(images.length > 0) { 
+            if(images.length > 0) {
                 let sliderItems = images.map(blob => `<div class="d-slider-item"><img src="${Utils.getImgSrc(blob)}" onclick="ImageViewer.open(this.src)"></div>`).join('');
                 html += `<div class="d-slider-container"><div class="d-slider">${sliderItems}</div>${images.length > 1 ? `<div class="d-slider-indicator">1 / ${images.length}</div>` : ''}</div>`;
                 setTimeout(() => { const slider = document.querySelector('.d-slider'); const indicator = document.querySelector('.d-slider-indicator'); if(slider && indicator) slider.addEventListener('scroll', () => { const index = Math.round(slider.scrollLeft / slider.clientWidth) + 1; indicator.innerText = `${index} / ${images.length}`; }); }, 100);
-                if(post.title) html += `<div style="padding:15px 20px 0; font-size:1.33rem; font-weight:bold;">${post.title}</div>`; if(post.content) html += `<div class="d-content">${post.content}</div>`;
-            } else { if(post.title) html += `<div style="padding:20px 20px 0; font-size:1.33rem; font-weight:bold;">${post.title}</div>`; html += `<div class="d-content text-mode">${post.content}</div>`; }
+                if(post.title) html += `<div style="padding:15px 20px 0; font-size:1.33rem; font-weight:bold;">${post.title}</div>`;
+                if(post.content) html += `<div class="d-content">${parseMarkdoom(post.content)}</div>`;
+            } else {
+                if(post.title) html += `<div style="padding:20px 20px 0; font-size:1.33rem; font-weight:bold;">${post.title}</div>`;
+                html += `<div class="d-content text-mode">${parseMarkdoom(post.content)}</div>`;
+            }
             html += '<div style="height:60px;"></div>';
             bodyEl.innerHTML = html; document.getElementById('d-date').innerText = Utils.formatDate(post.date).full; DetailRenderer.renderComments(post);
             const inputBar = document.getElementById('float-input-bar');
@@ -1218,22 +1354,51 @@
         },
         openHtmlDetail: (post) => { 
             DetailRenderer.currentPostId = post.id; 
-            const container = document.getElementById('view-html-detail'); 
+            const container = document.getElementById('view-html-detail');
             const iframe = document.getElementById('html-detail-iframe');
-            const safeContent = post.content + `<style>body { margin:0; overflow:hidden; }</style>`;
-            iframe.srcdoc = safeContent;
-            iframe.onload = () => {
-                setTimeout(() => {
-                    try { const innerHeight = iframe.contentWindow.document.body.scrollHeight; iframe.style.height = (innerHeight + 20) + 'px'; } catch(e) { iframe.style.height = '800px'; }
-                }, 100);
-            };
-            const user = Utils.getCurrentUser(); 
+            // 全屏显示，不需要额外样式注入去限制 overflow
+            iframe.srcdoc = post.content;
+            
+            const user = Utils.getCurrentUser();
             const comments = post.comments || [];
             let commentsHtml = comments.length === 0 ? '<div style="text-align:center; color:#ccc; font-size:0.89rem; padding:10px;">暂无评论</div>' : comments.map(c => `<div style="margin-bottom:10px; font-size:0.96rem;"><span style="font-weight:bold;">${user.name}:</span> ${c.text}</div>`).join('');
             const listEl = document.getElementById('html-comments-list-simple');
-            listEl.innerHTML = commentsHtml; 
-            document.querySelectorAll('.view').forEach(el => el.classList.remove('active')); 
-            container.classList.add('active'); 
+            listEl.innerHTML = commentsHtml;
+            document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+            container.classList.add('active');
+        },
+        toggleHtmlComments: (show) => {
+            const sheet = document.getElementById('html-comment-sheet');
+            const overlay = document.getElementById('html-sheet-overlay');
+            const currentState = sheet.classList.contains('active');
+            const shouldShow = show !== undefined ? show : !currentState;
+            
+            if (shouldShow) {
+                sheet.classList.add('active');
+                overlay.classList.add('active');
+            } else {
+                sheet.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+        },
+        copyHtml: async () => {
+            const post = await DBMgr.getPost(DetailRenderer.currentPostId);
+            if (!post || !post.content) return alert('内容为空');
+            try {
+                // 创建一个临时的 textarea 元素来执行复制
+                const textarea = document.createElement('textarea');
+                textarea.value = post.content;
+                textarea.style.position = 'fixed'; // 避免页面滚动
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('HTML 代码已复制');
+            } catch (err) {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动复制');
+            }
         },
         renderComments: (post) => { const listEl = document.getElementById('d-comments-list'); if(!post.comments || post.comments.length === 0) { listEl.innerHTML = '<div style="text-align:center; color:#eee;">暂无评论</div>'; return; } const user = Utils.getCurrentUser(); listEl.innerHTML = post.comments.map(c => `<div class="comment-item"><img src="${user.avatar}" class="c-avatar"><div class="c-right"><div class="c-top"><span>${user.name}</span></div><div class="c-text">${c.text}</div><div class="c-date">${Utils.formatDate(c.date).full}</div></div></div>`).join(''); },
         addComment: async () => { let text = ''; const floatInput = document.getElementById('comment-input'); const inlineInput = document.getElementById('inline-comment-input'); if (inlineInput && document.body.contains(inlineInput) && inlineInput.offsetParent !== null) { text = inlineInput.value; inlineInput.value = ''; } else if (floatInput && floatInput.value) { text = floatInput.value; floatInput.value = ''; } if(!text) return; const post = await DBMgr.getPost(DetailRenderer.currentPostId); if(!post.comments) post.comments = []; post.comments.push({ text: text, date: Date.now() }); await DBMgr.savePost(post); DetailRenderer.renderComments(post); if(!document.getElementById('d-inline-input-area').innerHTML) { setTimeout(() => { document.getElementById('view-detail').scrollTop = document.getElementById('view-detail').scrollHeight; }, 100); } },
